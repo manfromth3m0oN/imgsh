@@ -13,10 +13,18 @@ def index():
     top = db.scan(count=9)[1]
     return render_template('index.html', posts=top)
 
+@app.route('/all')
+def all():
+    ret = ''
+    scan = db.scan()[1]
+    for i in scan:
+        ret = ret + '<a href="./static/storage/'+i.decode()+'">'+i.decode()+'</a><br/>'
+    return ret
+
 @app.route('/<id>')
 def img(id):
     time = db.get(id)
-    return render_template('img.html', id=id, time=time.decode())
+    return render_template('img.html', id=id, time=time)
 
 @app.route('/uupload')
 def uploadpage():
@@ -31,4 +39,4 @@ def upload():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=80)
